@@ -12,13 +12,8 @@ async function welcome () {
   rainbowTitle.stop()
 
   console.log(`
-  ${chalk.bgGreenBright.black('WHY DO YOU WANT TO USE THIS APP?')}
-    You can use this app to:
-    - Add a new contact
-    - List all contacts
-    - Search a contact by name
-    - Delete a contact
-    - Update a contact
+  ${chalk.bgGreenBright.black('🚀WHY DO YOU WANT TO USE THIS APP?')}
+    This application is a simple contact manager that allows you to create, read, update and delete contacts.
   `)
 }
 
