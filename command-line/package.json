@@ -2,9 +2,12 @@
   "name": "command-line",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "lint": "eslint .",
+    "dev": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +19,13 @@
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
     "vitest": "^0.29.8"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "chalk-animation": "^2.0.3",
+    "figlet": "^1.6.0",
+    "gradient-string": "^2.0.2",
+    "inquirer": "^9.1.5",
+    "nanospinner": "^1.1.0"
   }
 }
