@@ -42,7 +42,7 @@ async function menu () {
     await register()
   }
   if (answers.menu === 'Exit') {
-    process.exit()
+    await exitApp()
   }
   if (answers.menu === 'Sudo mode') {
     console.log('Sudo mode activated')
@@ -100,6 +100,14 @@ async function register () {
     }
   ])
   Object.assign(newUser, answers)
+}
+async function exitApp () {
+  const rainbowTitle = chalkAnimation.pulse(
+    'Thanks for using Contact App CLI by @ramirezmz \n'
+  )
+  await sleep()
+  rainbowTitle.stop()
+  process.exit(0)
 }
 
 export default {
