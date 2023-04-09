@@ -4,6 +4,8 @@ import chalk from 'chalk'
 import chalkAnimation from 'chalk-animation'
 import inquirer from 'inquirer'
 
+const newUser = {}
+
 async function welcome () {
   const rainbowTitle = chalkAnimation.rainbow(
     'Welcome to Contact App CLI by @ramirezmz \n'
@@ -31,6 +33,7 @@ async function menu () {
   })
   if (answers.menu === 'Login to your account') {
     console.log('Loginnnn')
+    await login()
   }
   if (answers.menu === 'Create an account') {
     console.log('Create an account')
@@ -43,7 +46,6 @@ async function menu () {
     console.log('Sudo mode activated')
   }
 }
-const newUser = {}
 async function register () {
   const answers = await inquirer.prompt([
     {
@@ -115,6 +117,52 @@ async function exitApp () {
   await sleep()
   rainbowTitle.stop()
   process.exit(0)
+}
+async function login () {
+  const answers = await inquirer.prompt([
+    {
+      name: 'username',
+      type: 'input',
+      message: 'Please, type your username: ',
+      default () {
+        return 'Player-wins'
+      }
+    },
+    {
+      name: 'password',
+      type: 'password',
+      message: 'Please, type your password: ',
+      mask: '*',
+      default () {
+        return '123456'
+      }
+    }
+  ])
+  spinner.start()
+  const sendFormWithSuccess = true
+  const wrongPassword = false
+  if (wrongPassword) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgRedBright.whiteBright('Username or password incorrect!🤬🤬🤬')}
+    ${chalk.bgBlueBright.whiteBright('Please, try again!🧐🧐🧐')}
+    `)
+    await login()
+  } else {
+    if (sendFormWithSuccess) {
+      await sleep()
+      spinner.stop()
+      console.log(`
+    ${chalk.bgBlueBright.whiteBright('User logged in with successful!🥳🥳🥳')}`)
+    } else {
+      await sleep()
+      spinner.stop()
+      console.log(`
+    ${chalk.bgGray.whiteBright('User not logged in!😢😢😢')}
+    `)
+    }
+  }
 }
 
 export default {
