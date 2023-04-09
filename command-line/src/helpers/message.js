@@ -1,5 +1,5 @@
 import { sleep } from '../utils/sleep.js'
-// import { spinner } from '../utils/spinner.js'
+import { spinner } from '../utils/spinner.js'
 import chalk from 'chalk'
 import chalkAnimation from 'chalk-animation'
 import inquirer from 'inquirer'
@@ -94,7 +94,19 @@ async function register () {
       }
     }
   ])
+  spinner.start()
   Object.assign(newUser, answers)
+  const sendFormWithSuccess = true
+  if (sendFormWithSuccess) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgBlueBright.whiteBright('User created with successful!🥳🥳🥳')}`)
+  } else {
+    console.log(`
+    ${chalk.bgRedBright.whiteBright('User not created!😢😢😢')}
+    `)
+  }
 }
 async function exitApp () {
   const rainbowTitle = chalkAnimation.pulse(
