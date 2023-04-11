@@ -14,11 +14,25 @@ async function createAccount (name, username, password) {
   })
   if (response.status === 200) {
     return response.json()
-  } else {
-    return false
   }
+  return false
+}
+
+async function login (username, password) {
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password })
+  })
+  if (response.status === 200) {
+    return response.json()
+  }
+  return false
 }
 
 export default {
-  createAccount
+  createAccount,
+  login
 }
