@@ -175,7 +175,8 @@ async function menuLogged () {
     choices: ['Create a contact', 'Read all contacts', 'Update a contact', 'Delete a contact', 'Exit']
   })
   if (answers.menu === 'Create a contact') {
-    console.log('Create a contact')
+    // console.log('Create a contact')
+    await createContact()
   }
   if (answers.menu === 'Read all contacts') {
     console.log('Read all contacts')
@@ -188,6 +189,48 @@ async function menuLogged () {
   }
   if (answers.menu === 'Exit') {
     await exitApp()
+  }
+}
+async function createContact () {
+  const answers = await inquirer.prompt([
+    {
+      name: 'name',
+      type: 'input',
+      message: 'What is the name of the contact?',
+      default () {
+        return 'Player'
+      }
+    },
+    {
+      name: 'phone',
+      type: 'input',
+      message: 'What is the phone number of the contact?',
+      default () {
+        return '998876565'
+      }
+    },
+    {
+      name: 'email',
+      type: 'input',
+      message: 'What is the email of the contact?',
+      default () {
+        return 'test@mail.com'
+      }
+    }
+  ])
+  console.log(answers)
+  spinner.start()
+  const sendFormWithSuccess = true
+  if (sendFormWithSuccess) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgBlueBright.whiteBright('Contact created with successful!🥳🥳🥳')}`)
+    await menuLogged()
+  } else {
+    console.log(`
+    ${chalk.bgRedBright.whiteBright('Contact not created!😢😢😢')}
+    `)
   }
 }
 
