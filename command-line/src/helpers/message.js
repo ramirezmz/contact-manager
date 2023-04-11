@@ -3,6 +3,7 @@ import { spinner } from '../utils/spinner.js'
 import chalk from 'chalk'
 import chalkAnimation from 'chalk-animation'
 import inquirer from 'inquirer'
+import API from '../services/api.js'
 
 const newUser = {}
 
@@ -97,17 +98,21 @@ async function register () {
   ])
   spinner.start()
   Object.assign(newUser, answers)
-  const sendFormWithSuccess = true
-  if (sendFormWithSuccess) {
+  const sendForm = await API.createAccount(newUser.name, newUser.username, newUser.password)
+
+  if (sendForm.statusCode === 201) {
     await sleep()
     spinner.stop()
     console.log(`
     ${chalk.bgBlueBright.whiteBright('User created with successful!🥳🥳🥳')}`)
     await menu()
   } else {
+    await sleep()
+    spinner.stop()
     console.log(`
-    ${chalk.bgRedBright.whiteBright('User not created!😢😢😢')}
+    ${chalk.bgRedBright.whiteBright(`${sendForm.body.name}🤬🤬🤬`)}
     `)
+    await menu()
   }
 }
 async function exitApp () {
