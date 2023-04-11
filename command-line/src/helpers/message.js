@@ -18,7 +18,6 @@ async function welcome () {
     This application is a simple contact manager that allows you to create, read, update and delete contacts.
   `)
 }
-
 async function menu () {
   const answers = await inquirer.prompt({
     type: 'list',
@@ -104,6 +103,7 @@ async function register () {
     spinner.stop()
     console.log(`
     ${chalk.bgBlueBright.whiteBright('User created with successful!🥳🥳🥳')}`)
+    await menu()
   } else {
     console.log(`
     ${chalk.bgRedBright.whiteBright('User not created!😢😢😢')}
@@ -155,13 +155,39 @@ async function login () {
       spinner.stop()
       console.log(`
     ${chalk.bgBlueBright.whiteBright('User logged in with successful!🥳🥳🥳')}`)
+      await menuLogged()
     } else {
       await sleep()
       spinner.stop()
       console.log(`
     ${chalk.bgGray.whiteBright('User not logged in!😢😢😢')}
     `)
+      await menu()
     }
+  }
+}
+async function menuLogged () {
+  const userName = 'Roberto'
+  const answers = await inquirer.prompt({
+    type: 'list',
+    name: 'menu',
+    message: `Hello ${userName}, what do you want to do?`,
+    choices: ['Create a contact', 'Read all contacts', 'Update a contact', 'Delete a contact', 'Exit']
+  })
+  if (answers.menu === 'Create a contact') {
+    console.log('Create a contact')
+  }
+  if (answers.menu === 'Read all contacts') {
+    console.log('Read all contacts')
+  }
+  if (answers.menu === 'Update a contact') {
+    console.log('Update a contact')
+  }
+  if (answers.menu === 'Delete a contact') {
+    console.log('Delete a contact')
+  }
+  if (answers.menu === 'Exit') {
+    await exitApp()
   }
 }
 
