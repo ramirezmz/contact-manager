@@ -4,8 +4,10 @@ import chalk from 'chalk'
 import chalkAnimation from 'chalk-animation'
 import inquirer from 'inquirer'
 import API from '../services/api.js'
+import factoryUserLogged from '../helpers/factoryUserLogged.js'
 
 const newUser = {}
+const userLogged = {}
 
 async function welcome () {
   const rainbowTitle = chalkAnimation.rainbow(
@@ -144,9 +146,11 @@ async function login () {
     }
   ])
   spinner.start()
-  const sendFormWithSuccess = true
-  const wrongPassword = false
-  if (wrongPassword) {
+  const sendForm = await API.login(answers.username, answers.password)
+  const { statusCode, body } = sendForm
+  Object.assign(userLogged, factoryUserLogged(body))
+
+  if (statusCode === 400) {
     await sleep()
     spinner.stop()
     console.log(`
@@ -155,7 +159,7 @@ async function login () {
     `)
     await login()
   } else {
-    if (sendFormWithSuccess) {
+    if (statusCode === 200) {
       await sleep()
       spinner.stop()
       console.log(`
@@ -172,15 +176,13 @@ async function login () {
   }
 }
 async function menuLogged () {
-  const userName = 'Roberto'
   const answers = await inquirer.prompt({
     type: 'list',
     name: 'menu',
-    message: `Hello ${userName}, what do you want to do?`,
+    message: `Hello ${userLogged.username}, what do you want to do?`,
     choices: ['Create a contact', 'Read all contacts', 'Update a contact', 'Delete a contact', 'Exit']
   })
   if (answers.menu === 'Create a contact') {
-    // console.log('Create a contact')
     await createContact()
   }
   if (answers.menu === 'Read all contacts') {
