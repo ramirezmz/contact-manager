@@ -9,6 +9,7 @@ import Command from './commands/index.js'
 
 const newUser = {}
 const userLogged = {}
+let contacts = []
 
 async function welcome () {
   const rainbowTitle = chalkAnimation.rainbow(
@@ -183,6 +184,7 @@ async function menuLogged () {
       console.log('No contacts found')
       await menuLogged()
     }
+    contacts = allContacts.body.data
     console.table(allContacts.body.data)
     await menuLogged()
   }
@@ -191,9 +193,10 @@ async function menuLogged () {
   }
   if (answers.menu === 'Delete a contact') {
     console.log('Delete a contact')
+    await deleteContact()
   }
   if (answers.menu === 'Exit') {
-    await Command.exit()
+    await menu()
   }
 }
 async function createContact () {
@@ -233,6 +236,45 @@ async function createContact () {
     ${chalk.bgBlueBright.whiteBright('Contact created with successful!🥳🥳🥳')}`)
     await menuLogged()
   } else {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgRedBright.whiteBright(`${body.message}🤬🤬🤬`)}
+    `)
+    await menuLogged()
+  }
+}
+
+async function deleteContact () {
+  if (contacts.length === 0) {
+    const allContacts = await API.readAllContacts(userLogged.token)
+    contacts = allContacts.body.data
+  }
+  if (contacts.length === 0) {
+    console.log('No contacts found')
+    await menuLogged()
+  }
+  const choicesContact = contacts.map(contact => ({
+    name: contact.name,
+    value: { id: contact._id, name: contact.name }
+  }))
+  const answers = await inquirer.prompt({
+    type: 'list',
+    name: 'contact',
+    message: 'Choose a contact to delete:',
+    choices: choicesContact
+  })
+  spinner.start()
+  const contact = await API.deleteContact(answers.contact.id, userLogged.token)
+  const { statusCode, body } = contact
+  if (statusCode === 200) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgBlueBright.whiteBright(`Contact ${answers.contact.name} deleted with successful!🥳🥳🥳`)}`)
+    await menuLogged()
+  }
+  if (statusCode === 404) {
     await sleep()
     spinner.stop()
     console.log(`

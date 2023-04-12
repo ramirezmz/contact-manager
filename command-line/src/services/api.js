@@ -60,9 +60,23 @@ async function readAllContacts (token) {
   return false
 }
 
+async function deleteContact (id) {
+  const response = await fetch(`${API_URL}/me/contact/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  if (response.status === 200) {
+    return response.json()
+  }
+  return false
+}
+
 export default {
   createAccount,
   login,
   createContact,
-  readAllContacts
+  readAllContacts,
+  deleteContact
 }
