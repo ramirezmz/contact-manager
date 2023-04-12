@@ -177,7 +177,14 @@ async function menuLogged () {
     await createContact()
   }
   if (answers.menu === 'Read all contacts') {
-    console.log('Read all contacts')
+    const allContacts = await API.readAllContacts(userLogged.token)
+    // TODO: melhorar a visualização dos dados
+    if (allContacts.body.data.length === 0) {
+      console.log('No contacts found')
+      await menuLogged()
+    }
+    console.table(allContacts.body.data)
+    await menuLogged()
   }
   if (answers.menu === 'Update a contact') {
     console.log('Update a contact')
