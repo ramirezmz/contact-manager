@@ -5,6 +5,7 @@ import chalkAnimation from 'chalk-animation'
 import inquirer from 'inquirer'
 import API from '../services/api.js'
 import factoryUserLogged from '../helpers/factoryUserLogged.js'
+import Command from './commands/index.js'
 
 const newUser = {}
 const userLogged = {}
@@ -34,15 +35,13 @@ async function menu () {
     ]
   })
   if (answers.menu === 'Login to your account') {
-    console.log('Loginnnn')
     await login()
   }
   if (answers.menu === 'Create an account') {
-    console.log('Create an account')
     await register()
   }
   if (answers.menu === 'Exit') {
-    await exitApp()
+    await Command.exit()
   }
   if (answers.menu === 'Sudo mode') {
     console.log('Sudo mode activated')
@@ -101,7 +100,6 @@ async function register () {
   spinner.start()
   Object.assign(newUser, answers)
   const sendForm = await API.createAccount(newUser.name, newUser.username, newUser.password)
-
   if (sendForm.statusCode === 201) {
     await sleep()
     spinner.stop()
@@ -117,14 +115,7 @@ async function register () {
     await menu()
   }
 }
-async function exitApp () {
-  const rainbowTitle = chalkAnimation.pulse(
-    'Thanks for using Contact App CLI by @ramirezmz \n'
-  )
-  await sleep()
-  rainbowTitle.stop()
-  process.exit(0)
-}
+
 async function login () {
   const answers = await inquirer.prompt([
     {
@@ -148,7 +139,6 @@ async function login () {
   spinner.start()
   const sendForm = await API.login(answers.username, answers.password)
   const { statusCode, body } = sendForm
-  Object.assign(userLogged, factoryUserLogged(body))
 
   if (statusCode === 400) {
     await sleep()
@@ -160,6 +150,7 @@ async function login () {
     await login()
   } else {
     if (statusCode === 200) {
+      Object.assign(userLogged, factoryUserLogged(body))
       await sleep()
       spinner.stop()
       console.log(`
@@ -195,7 +186,7 @@ async function menuLogged () {
     console.log('Delete a contact')
   }
   if (answers.menu === 'Exit') {
-    await exitApp()
+    await Command.exit()
   }
 }
 async function createContact () {
@@ -225,19 +216,22 @@ async function createContact () {
       }
     }
   ])
-  console.log(answers)
   spinner.start()
-  const sendFormWithSuccess = true
-  if (sendFormWithSuccess) {
+  const contact = await API.createContact(answers.name, answers.phone, answers.email, userLogged.id)
+  const { statusCode, body } = contact
+  if (statusCode === 201) {
     await sleep()
     spinner.stop()
     console.log(`
     ${chalk.bgBlueBright.whiteBright('Contact created with successful!🥳🥳🥳')}`)
     await menuLogged()
   } else {
+    await sleep()
+    spinner.stop()
     console.log(`
-    ${chalk.bgRedBright.whiteBright('Contact not created!😢😢😢')}
+    ${chalk.bgRedBright.whiteBright(`${body.message}🤬🤬🤬`)}
     `)
+    await menuLogged()
   }
 }
 
