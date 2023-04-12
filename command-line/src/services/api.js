@@ -46,8 +46,23 @@ async function createContact (name, phone, email, userId) {
   return false
 }
 
+async function readAllContacts (token) {
+  const response = await fetch(`${API_URL}/me/contacts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `${token}`
+    }
+  })
+  if (response.status === 200) {
+    return response.json()
+  }
+  return false
+}
+
 export default {
   createAccount,
   login,
-  createContact
+  createContact,
+  readAllContacts
 }
