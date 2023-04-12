@@ -1,11 +1,12 @@
 function factoryUserLogged (body) {
   const { data } = body
   const { userExist, token } = data
-  const { name, username } = userExist
+  const { name, username, _id } = userExist
   const userLogged = {
     name,
     username,
-    token
+    token,
+    id: _id
   }
   return userLogged
 }
