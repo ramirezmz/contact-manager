@@ -32,7 +32,22 @@ async function login (username, password) {
   return false
 }
 
+async function createContact (name, phone, email, userId) {
+  const response = await fetch(`${API_URL}/contact/${userId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, phone, email })
+  })
+  if (response.status === 200) {
+    return response.json()
+  }
+  return false
+}
+
 export default {
   createAccount,
-  login
+  login,
+  createContact
 }
