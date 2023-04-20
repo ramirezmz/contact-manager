@@ -73,10 +73,25 @@ async function deleteContact (id) {
   return false
 }
 
+async function updateContact (id, name, phone, email) {
+  const response = await fetch(`${API_URL}/me/contact/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, phone, email })
+  })
+  if (response.status === 200) {
+    return response.json()
+  }
+  return false
+}
+
 export default {
   createAccount,
   login,
   createContact,
   readAllContacts,
-  deleteContact
+  deleteContact,
+  updateContact
 }
