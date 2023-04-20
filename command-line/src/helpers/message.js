@@ -6,6 +6,8 @@ import inquirer from 'inquirer'
 import API from '../services/api.js'
 import factoryUserLogged from '../helpers/factoryUserLogged.js'
 import Command from './commands/index.js'
+import factoryAllContacts from '../helpers/factoryAllContacts.js'
+import findUserByName from './findUserByName.js'
 
 const newUser = {}
 const userLogged = {}
@@ -178,18 +180,21 @@ async function menuLogged () {
     await createContact()
   }
   if (answers.menu === 'Read all contacts') {
+    console.clear()
     const allContacts = await API.readAllContacts(userLogged.token)
     // TODO: melhorar a visualização dos dados
     if (allContacts.body.data.length === 0) {
       console.log('No contacts found')
       await menuLogged()
     }
-    contacts = allContacts.body.data
-    console.table(allContacts.body.data)
+    const fiterAllContacts = factoryAllContacts(allContacts)
+    contacts = fiterAllContacts
+    console.table(contacts)
     await menuLogged()
   }
   if (answers.menu === 'Update a contact') {
     console.log('Update a contact')
+    await updateContact()
   }
   if (answers.menu === 'Delete a contact') {
     console.log('Delete a contact')
@@ -248,30 +253,95 @@ async function createContact () {
 async function deleteContact () {
   if (contacts.length === 0) {
     const allContacts = await API.readAllContacts(userLogged.token)
-    contacts = allContacts.body.data
+    const fiterAllContacts = factoryAllContacts(allContacts)
+    contacts = fiterAllContacts
+    if (contacts.length === 0) {
+      console.log('No contacts found')
+      await menuLogged()
+    }
   }
-  if (contacts.length === 0) {
-    console.log('No contacts found')
-    await menuLogged()
-  }
-  const choicesContact = contacts.map(contact => ({
-    name: contact.name,
-    value: { id: contact._id, name: contact.name }
-  }))
+
   const answers = await inquirer.prompt({
     type: 'list',
     name: 'contact',
     message: 'Choose a contact to delete:',
-    choices: choicesContact
+    choices: contacts
   })
+  const removeUserById = findUserByName(contacts, answers.contact)
   spinner.start()
-  const contact = await API.deleteContact(answers.contact.id, userLogged.token)
-  const { statusCode, body } = contact
+  const contactRemovedOnDB = await API.deleteContact(removeUserById.id)
+  const { statusCode, body } = contactRemovedOnDB
   if (statusCode === 200) {
     await sleep()
     spinner.stop()
     console.log(`
-    ${chalk.bgBlueBright.whiteBright(`Contact ${answers.contact.name} deleted with successful!🥳🥳🥳`)}`)
+    ${chalk.bgBlueBright.whiteBright(`Contact ${contactRemovedOnDB.name} deleted with successful!🥳🥳🥳`)}`)
+    await menuLogged()
+  }
+  if (statusCode === 404) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgRedBright.whiteBright(`${body.message}🤬🤬🤬`)}
+    `)
+    await menuLogged()
+  }
+}
+
+async function updateContact () {
+  if (contacts.length === 0) {
+    const allContacts = await API.readAllContacts(userLogged.token)
+    const fiterAllContacts = factoryAllContacts(allContacts)
+    contacts = fiterAllContacts
+    if (contacts.length === 0) {
+      console.log('No contacts found')
+      await menuLogged()
+    }
+  }
+
+  const answers = await inquirer.prompt({
+    type: 'list',
+    name: 'contact',
+    message: 'Choose a contact to update:',
+    choices: contacts
+  })
+  const updateUserById = findUserByName(contacts, answers.contact)
+  spinner.start()
+  await sleep()
+  spinner.stop()
+  const answersUpdate = await inquirer.prompt([
+    {
+      name: 'name',
+      type: 'input',
+      message: 'What is the name of the contact?',
+      default () {
+        return 'Pepe'
+      }
+    },
+    {
+      name: 'phone',
+      type: 'input',
+      message: 'What is the phone number of the contact?',
+      default () {
+        return '998876565'
+      }
+    },
+    {
+      name: 'email',
+      type: 'input',
+      message: 'What is the email of the contact?',
+      default () {
+        return 'test@mail.com'
+      }
+    }
+  ])
+  const contactUpdatedOnDB = await API.updateContact(updateUserById.id, answersUpdate.name, answersUpdate.phone, answersUpdate.email)
+  const { statusCode, body } = contactUpdatedOnDB
+  if (statusCode === 200) {
+    await sleep()
+    spinner.stop()
+    console.log(`
+    ${chalk.bgBlueBright.whiteBright(`Contact ${answersUpdate.name} updated with successful!🥳🥳🥳`)}`)
     await menuLogged()
   }
   if (statusCode === 404) {
