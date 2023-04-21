@@ -4,7 +4,7 @@ This project is a simple contact manager. It is CRUD application that allows you
 
 ## Image
 
-![Contact Manager](https://i.imgur.com/B25QUCg.png)
+![Contact Manager](https://i.imgur.com/f5hy3Dd.png)
 ## Tools
 
 This project uses the following tools:
