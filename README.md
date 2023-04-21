@@ -2,6 +2,9 @@
 
 This project is a simple contact manager. It is CRUD application that allows you to create, read, update and delete contacts.
 
+## Image
+
+![Contact Manager](https://i.imgur.com/B25QUCg.png)
 ## Tools
 
 This project uses the following tools:
