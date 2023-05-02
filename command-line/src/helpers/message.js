@@ -21,8 +21,9 @@ async function welcome () {
   rainbowTitle.stop()
 
   console.log(`
-  ${chalk.bgGreenBright.black('🚀WHAT DO YOU WANT TO USE THIS APP?')}
+  ${chalk.bgGreenBright.black('🚀WHAT DO I DO WITH THIS APP?')}
     This application is a simple contact manager that allows you to create, read, update and delete contacts.
+    But first, you need to create an account!
   `)
 }
 async function menu () {

@@ -1,10 +1,20 @@
 # Contact Manager project
 
-This project is a simple contact manager. It is CRUD application that allows you to create, read, update and delete contacts.
+This project is a contact manager, but it's special! why? the front end is a command line interface (CLI).
+You can run in your machine, just need to have Nodejs!
+In this project, you can do the following:
+- Create an account
+- Login in your account
+- Create a contact
+- Read the contacts
+- Remove a contact
+- Update a contact
+- Logout
 
-## Image
+## Demo
 
 ![Contact Manager](https://i.imgur.com/f5hy3Dd.png)
+
 ## Tools
 
 This project uses the following tools:
@@ -14,7 +24,11 @@ This project uses the following tools:
 - [Fliget](https://www.npmjs.com/package/figlet)
 - [inquirer](https://www.npmjs.com/package/inquirer)
 - [Gradient-string](https://www.npmjs.com/package/gradient-string)
-
+- [MongoDB]()
+- [Mongoose]()
+- [Docker]()
+- [Mocha]()
+- [Sinon]()
 ## Installation
 
 1. Clone the repository
