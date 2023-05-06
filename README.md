@@ -1,8 +1,12 @@
 # Contact Manager project
 
-This project is a contact manager, but it's special! why? the front end is a command line interface (CLI).
+![Contact preview](doc/create-account.gif)
+
+This project calls contact manager, and it's special! why? the front end is a command line interface (CLI).
 You can run in your machine, just need to have Nodejs!
+
 In this project, you can do the following:
+
 - Create an account
 - Login in your account
 - Create a contact
@@ -13,7 +17,7 @@ In this project, you can do the following:
 
 ## Demo
 
-![Contact Manager](https://i.imgur.com/f5hy3Dd.png)
+![Contact Manager](doc/screen-page.png)
 
 ## Tools
 
@@ -29,7 +33,7 @@ This project uses the following tools:
 - [Docker]()
 - [Mocha]()
 - [Sinon]()
-## Installation
+## How to run
 
 1. Clone the repository
 2. Enter the project directory `cd contact-manager/command-line`
