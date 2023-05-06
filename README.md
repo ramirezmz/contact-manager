@@ -28,11 +28,12 @@ This project uses the following tools:
 - [Fliget](https://www.npmjs.com/package/figlet)
 - [inquirer](https://www.npmjs.com/package/inquirer)
 - [Gradient-string](https://www.npmjs.com/package/gradient-string)
-- [MongoDB]()
-- [Mongoose]()
-- [Docker]()
-- [Mocha]()
-- [Sinon]()
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Docker](https://www.docker.com/)
+- [Mocha](https://mochajs.org/)
+- [Sinon](https://sinonjs.org/)
+
 ## How to run
 
 1. Clone the repository
