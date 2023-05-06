@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const API_URL = process.env.API_URL || 'http://localhost:3000'
+const API_URL = process.env.API_URL || 'https://contacts-api.herokuapp.com'
 
 async function createAccount (name, username, password) {
   const response = await fetch(`${API_URL}/register`, {
