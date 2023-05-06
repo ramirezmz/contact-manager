@@ -2,8 +2,9 @@
 
 ![Contact preview](doc/create-account.gif)
 
-This project calls contact manager, and it's special! why? the front end is a command line interface (CLI).
-You can run in your machine, just need to have Nodejs!
+This project calls contact manager, and it's special! why? the front end is a command line interface (CLI). Also, the backend is a REST API. You don't need to up the backend, because it's already up in the cloud.
+
+You just need to run the front end (cli) in your terminal and enjoy!
 
 In this project, you can do the following:
 
